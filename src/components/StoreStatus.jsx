@@ -38,6 +38,7 @@ class StoreStatus extends Component {
     e.preventDefault();
     console.log(this.state.account);
     //Call the server
+
     console.log("submitted");
   };
   handleChange = (e) => {
