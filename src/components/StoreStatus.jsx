@@ -97,7 +97,7 @@ class StoreStatus extends Component {
       <div className="container">
         <h1 className="bg-dark text-white">Store Status</h1>
         <form onSubmit={this.handleSubmit}>
-          <div className="bg-info">
+          <div style={{ marginBottom: 5 }} className="bg-info">
             <label className="form-check-label text-white mr-3" htmlFor="date">
               Date Today
             </label>

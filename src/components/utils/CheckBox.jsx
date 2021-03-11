@@ -4,22 +4,32 @@ const CheckBox = (props) => {
   const { name, value, onChange, checked, onClick, error, disabled } = props;
   return (
     <>
-      <div className="form-check">
-        <input
-          className="form-check-input head"
-          type="checkbox"
-          id={name}
-          name={name}
-          value={value}
-          onChange={onChange}
-          checked={checked}
-          onClick={onClick}
-          disabled={disabled}
-        />
-        <label className="form-check-label head" htmlFor={name}>
-          {disabled ? <s>{name}</s> : name}
-        </label>
-        {error && <div className="alert alert-danger">{error}</div>}
+      <div
+        className={
+          disabled
+            ? "bg-danger text-white container cont head"
+            : "container cont head"
+        }
+      >
+        <div className="inl">
+          <input
+            style={{ margin: 0 }}
+            className="form-check-input"
+            type="checkbox"
+            id={name}
+            name={name}
+            value={value}
+            onChange={onChange}
+            checked={checked}
+            onClick={onClick}
+            disabled={disabled}
+          />
+        </div>
+        <div className="inl">
+          <label className="form-check-label" htmlFor={name}>
+            {name}
+          </label>
+        </div>
       </div>
     </>
   );
