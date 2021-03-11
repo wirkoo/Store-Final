@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import CheckBox from "./utils/CheckBox";
 import Remarks from "./utils/Remarks";
+import { toast } from "react-toastify";
 
 class StoreStatus extends Component {
   state = {
@@ -32,16 +33,30 @@ class StoreStatus extends Component {
     submittedData: {},
   };
 
+  validation = () => {
+    let error;
+    return Object.keys(this.state.submittedData).length !== 17
+      ? (error = true)
+      : (error = false);
+  };
+
   handleSubmit = (e) => {
     e.preventDefault();
 
+    const submittedData = { ...this.state.submittedData };
     //validation
-    // const errors = this.validate();
-    // this.setState({ errors: errors || {} });
-    // if (errors) return;
+    const error = this.validation();
+    if (error) {
+      toast.warn("All fields are required, not submitted !");
+      return;
+    } else {
+      submittedData.date = this.todaysDate();
+      toast.success("Submitted Successfully");
+    }
 
     //Call the server
 
+    console.log(submittedData);
     console.log("submitted");
   };
 
@@ -63,19 +78,37 @@ class StoreStatus extends Component {
 
   handleAll = (e) => {
     let data = [...this.state.data];
+    let submittedData = { ...this.state.submittedData };
     for (let i = 0; i < data.length; i++) {
       data[i].checked = true;
       data[i].remarks = "";
     }
+    data.map((d) => (submittedData[d.name] = d.checked));
 
-    this.setState({ data });
+    this.setState({ data, submittedData });
   };
 
+  todaysDate = () => {
+    var d = new Date();
+    return d.toLocaleDateString();
+  };
   render() {
     return (
       <div className="container">
         <h1 className="bg-dark text-white">Store Status</h1>
         <form onSubmit={this.handleSubmit}>
+          <div className="bg-info">
+            <label className="form-check-label text-white mr-3" htmlFor="date">
+              Date Today
+            </label>
+            <input
+              style={{ textAlign: "center" }}
+              type={Date}
+              name="date"
+              value={this.todaysDate()}
+              readOnly
+            />
+          </div>
           {this.state.data.map((d) => (
             <>
               <CheckBox
@@ -87,6 +120,7 @@ class StoreStatus extends Component {
               />
 
               <Remarks
+                className="tester"
                 name={d.name}
                 value={d.remarks}
                 onChange={this.handleChange}

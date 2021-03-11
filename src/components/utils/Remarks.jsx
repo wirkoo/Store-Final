@@ -6,7 +6,9 @@ const Remarks = (props) => {
   return (
     <>
       <div className="form-group">
-        <label htmlFor={name}>{disabled ? <s>{newName}</s> : newName} </label>
+        <label style={{ float: "left" }} htmlFor={name}>
+          {disabled ? <s>{newName}</s> : newName}{" "}
+        </label>
         <input
           id={name}
           type="text"
