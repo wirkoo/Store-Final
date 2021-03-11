@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import CheckBox from "./utils/CheckBox";
 import Remarks from "./utils/Remarks";
 import { toast } from "react-toastify";
-
+import "../ManualStyles.css";
 class StoreStatus extends Component {
   state = {
     data: [
@@ -129,7 +129,7 @@ class StoreStatus extends Component {
               />
             </>
           ))}
-          <div className="form-check">
+          <div className=" bg-info m-2  text-white form-check head">
             <input
               className="form-check-input"
               type="checkbox"
