@@ -1,7 +1,7 @@
 import React from "react";
 
 const CheckBox = (props) => {
-  const { name, value, onChange, checked, onClick } = props;
+  const { name, value, onChange, checked, onClick, error, disabled } = props;
   return (
     <>
       <div className="form-check">
@@ -14,10 +14,12 @@ const CheckBox = (props) => {
           onChange={onChange}
           checked={checked}
           onClick={onClick}
+          disabled={disabled}
         />
         <label className="form-check-label" htmlFor={name}>
-          {name}
+          {disabled ? <s>{name}</s> : name}
         </label>
+        {error && <div className="alert alert-danger">{error}</div>}
       </div>
     </>
   );

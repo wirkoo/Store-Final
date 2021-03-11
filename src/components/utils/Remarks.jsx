@@ -2,12 +2,11 @@ import React from "react";
 
 const Remarks = (props) => {
   let { name, key, value, onChange, disabled } = props;
-  name = name.split(" ").join("") + "Remarks";
-
+  let newName = name + " Remarks";
   return (
     <>
       <div className="form-group">
-        <label htmlFor={name}>{disabled ? <s>{name}</s> : name}</label>
+        <label htmlFor={name}>{disabled ? <s>{newName}</s> : newName} </label>
         <input
           id={name}
           type="text"

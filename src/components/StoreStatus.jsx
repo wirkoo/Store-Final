@@ -5,70 +5,72 @@ import Remarks from "./utils/Remarks";
 class StoreStatus extends Component {
   state = {
     data: [
-      { id: 1, name: "Server", checked: false },
-      { id: 2, name: "Backup Server", checked: false },
-      { id: 3, name: "TAB", checked: false },
-      { id: 4, name: "Till 1", checked: false },
-      { id: 5, name: "Till 2", checked: false },
-      { id: 6, name: "Till 3", checked: false },
-      { id: 7, name: "LED", checked: false },
-      { id: 8, name: "Hand Scanner", checked: false },
-      { id: 9, name: "A4 Printer", checked: false },
-      { id: 10, name: "A4 Scanner", checked: false },
-      { id: 11, name: "Attendance Machine", checked: false },
-      { id: 12, name: "UPS Lights", checked: false },
-      { id: 13, name: "UPS Batteries Water Level", checked: false },
-      { id: 14, name: "Internet", checked: false },
-      { id: 15, name: "FootFall", checked: false },
-      { id: 16, name: "CCTV Cameras", checked: false },
-      { id: 17, name: "DVR", checked: false },
+      { id: 1, name: "Server", checked: false, remarks: "" },
+      { id: 2, name: "Backup Server", checked: false, remarks: "" },
+      { id: 3, name: "TAB", checked: false, remarks: "" },
+      { id: 4, name: "Till 1", checked: false, remarks: "" },
+      { id: 5, name: "Till 2", checked: false, remarks: "" },
+      { id: 6, name: "Till 3", checked: false, remarks: "" },
+      { id: 7, name: "LED", checked: false, remarks: "" },
+      { id: 8, name: "Hand Scanner", checked: false, remarks: "" },
+      { id: 9, name: "A4 Printer", checked: false, remarks: "" },
+      { id: 10, name: "A4 Scanner", checked: false, remarks: "" },
+      { id: 11, name: "Attendance Machine", checked: false, remarks: "" },
+      { id: 12, name: "UPS Lights", checked: false, remarks: "" },
+      {
+        id: 13,
+        name: "UPS Batteries Water Level",
+        checked: false,
+        remarks: "",
+      },
+      { id: 14, name: "Internet", checked: false, remarks: "" },
+      { id: 15, name: "FootFall", checked: false, remarks: "" },
+      { id: 16, name: "CCTV Cameras", checked: false, remarks: "" },
+      { id: 17, name: "DVR", checked: false, remarks: "" },
     ],
 
-    account: {},
-    errors: {},
-  };
-
-  validate = () => {
-    const account = { ...this.state.account };
-    let len = Object.keys(account).length;
-    if (len < this.state.data.length) return true;
+    submittedData: {},
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state.account);
+
+    //validation
+    // const errors = this.validate();
+    // this.setState({ errors: errors || {} });
+    // if (errors) return;
+
     //Call the server
 
     console.log("submitted");
   };
+
   handleChange = (e) => {
-    const account = { ...this.state.account };
+    const data = [...this.state.data];
+    const submittedData = { ...this.state.submittedData };
+    const index = data.findIndex(({ name }) => name === e.currentTarget.name);
 
     if (e.currentTarget.type === "checkbox") {
-      account[e.currentTarget.name] = e.currentTarget.checked;
+      data[index].checked = !data[index].checked;
+      submittedData[data[index].name] = data[index].checked;
     }
     if (e.currentTarget.type === "text") {
-      account[e.currentTarget.name] = e.currentTarget.value;
+      data[index].remarks = e.currentTarget.value;
+      submittedData[data[index].name] = data[index].remarks;
     }
-    this.setState({ account });
+    this.setState({ data, submittedData });
   };
 
   handleAll = (e) => {
     let data = [...this.state.data];
     for (let i = 0; i < data.length; i++) {
-      data[i].checked = !data[i].checked;
+      data[i].checked = true;
+      data[i].remarks = "";
     }
-    const account = { ...this.state.account };
-    data.map((d) => (account[d.name] = d.checked));
-    this.setState({ data, account });
+
+    this.setState({ data });
   };
-  handleClick = (d) => {
-    const account = { ...this.state.account };
-    const data = [...this.state.data];
-    const index = data.indexOf(d);
-    data[index].checked = !data[index].checked;
-    this.setState({ account, data });
-  };
+
   render() {
     return (
       <div className="container">
@@ -78,17 +80,18 @@ class StoreStatus extends Component {
             <>
               <CheckBox
                 name={d.name}
-                value={this.state.account}
+                value={d.checked}
                 checked={d.checked}
                 onChange={this.handleChange}
-                onClick={() => this.handleClick(d)}
+                disabled={d.remarks !== "" ? true : false}
               />
 
               <Remarks
                 name={d.name}
-                value={this.state.account.d}
+                value={d.remarks}
                 onChange={this.handleChange}
-                disabled={this.state.account[d.name] === true ? true : false}
+                disabled={d.checked === true ? true : false}
+                // error={this.state.errors[d.name + "Remarks"]}
               />
             </>
           ))}
@@ -106,9 +109,7 @@ class StoreStatus extends Component {
             </label>
           </div>
           <div className="container bg-dark">
-            <button className="btn btn-primary" disabled={this.validate}>
-              Submit
-            </button>
+            <button className="btn btn-primary">Submit</button>
           </div>
         </form>
       </div>
